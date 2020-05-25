@@ -44,6 +44,11 @@
 ;;
 ;; firefox --safe-mode --start-debugger-server
 ;;
+;; Also the following values should be set in a 'about:config' tab:
+;; 	devtools.debugger.remote-enabled = true
+;;	devtools.chrome.enabled = true
+;;
+;; Note: This changes may require a browser restart
 ;;
 
 ;;; Code:
