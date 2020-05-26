@@ -10,7 +10,7 @@
 ;;
 ;; Maintainer: Facundo de Guzman <facudeguzman@gmail>
 ;; URL: https://github.com/facuman/chrome-ff.el
-;; Package-Requires: ((emacs "25.1"))
+;; Package-Requires: ((emacs "25.1") (chrome "0.5"))
 ;; Keywords: comm
 
 ;; Redistribution and use in source and binary forms, with or without
@@ -38,9 +38,13 @@
 ;; POSSIBILITY OF SUCH DAMAGE.
 
 ;;; Commentary:
-;; This module requires chrome.el to work.
+;; This module requires chrome.el to work and it should be loaded
+;; first as this module works as an extension of it. The current
+;; chrome.el version can be found at:
 ;;
-;; Firefox needs to open the debug server port the communication to happen:
+;; https://github.com/anticomputer/chrome.el
+;;
+;; Firefox needs to open the debug server port for the communication to happen:
 ;;
 ;; firefox --safe-mode --start-debugger-server
 ;;
@@ -135,11 +139,6 @@ https://github.com/ruediger/emacs-firefox-remote/blob/master/firefox-remote.el"
   ;;                                     (read-frame chrome-ff--process)))
   chrome-ff--process)
 
-;; (defun chrome-ff--focus (proc-data tab)
-;;   (let* ((proc (car proc-data))
-;;          (tab-descriptor (format "%s%s" (cadr proc-data) (alist-get 'id tab))))
-;;     (chrome-ff--list-tabs proc-data tab-descriptor)))
-
 
 ;; Eval javascript
 ;; >> {"type":"evaluateJSAsync","text":"alert(1+1)","eager":true,"to":"server1.conn21.consoleActor3723"}
@@ -180,7 +179,6 @@ https://github.com/ruediger/emacs-firefox-remote/blob/master/firefox-remote.el"
            for proc-id = (alist-get 'id proc-alist)
            when (eq proc-id id)
            return (alist-get 'actor proc-alist) end))
-;; (chrome-ff--get-a-process-actor (chrome-ff--connect))
 
 (defun chrome-ff--get-target (proc descriptor &optional tag)
   (let ((payload (format chrome-ff--get-target-template
@@ -208,14 +206,6 @@ https://github.com/ruediger/emacs-firefox-remote/blob/master/firefox-remote.el"
                        (chrome-ff--format-packet
                         (format chrome-ff--detach-template console-actor))))
 
-;; (defun chrome-ff--get-tabs (proc)
-;;   (let* ((preview (alist-get 'preview (chrome-ff--eval proc "gBrowser.tabs")))
-;;          (items (alist-get 'items preview)))
-;;     (cl-loop for tab-alist across items
-;;              for label = (alist-get 'label tab-alist)
-;;              for id = (alist-get '_tPos tab-alist))))
-;; (chrome-ff--get-tabs (chrome-ff--connect))
-
 (defun chrome-ff--list-tabs (proc)
   (process-send-string proc (chrome-ff--format-packet chrome-ff--get-tabs-payload))
   (let ((tabs nil))
@@ -223,7 +213,6 @@ https://github.com/ruediger/emacs-firefox-remote/blob/master/firefox-remote.el"
     (while (eq tabs nil)
       (setq tabs (alist-get 'tabs (read-frame proc))))
     tabs))
-;; (chrome-ff--list-tabs (chrome-ff--connect))
 
 (defun chrome-ff--get-tab-details (proc)
   (cl-loop with count = 0
@@ -292,4 +281,3 @@ https://github.com/ruediger/emacs-firefox-remote/blob/master/firefox-remote.el"
   (chrome-ff--view-source (chrome-ff--connect (chrome-tab-port tab)
                                               (chrome-tab-host tab))
                           (format "view-source:%s" (chrome-tab-url tab))))
-;; (setq chrome-sessions '())
