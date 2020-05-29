@@ -1,12 +1,10 @@
-#+TITLE:     chrome-ff.el README
+#+TITLE:     chrome-ff.el
 #+SUBTITLE:  Firefox remote control extension for chrome.el
 #+AUTHOR:    Facundo de Guzman
 #+EMAIL:     (concat "facundo" at-sign "gmail.com")
 #+DESCRIPTION: R
 #+KEYWORDS:  emacs, remote, firefox, chrome
 #+LANGUAGE:  en
-
-* chrome-ff.el
 
 Chrome is an extension that is intended to allow the usage of *chrome.el* (https://github.com/anticomputer/chrome.el) with Firefox. *chrome.el* is itself a fork of *osa-chrome.el* (https://github.com/atomontage/osa-chrome).
 
