@@ -44,9 +44,13 @@
 ;;
 ;; https://github.com/anticomputer/chrome.el
 ;;
+;; The original version from which chrome.el is forked can be found at:
+;;
+;; https://github.com/atomontage/osa-chrome
+;;
 ;; Firefox needs to open the debug server port for the communication to happen:
 ;;
-;; firefox --safe-mode --start-debugger-server
+;; firefox --start-debugger-server
 ;;
 ;; Also the following values should be set in a 'about:config' tab:
 ;; 	devtools.debugger.remote-enabled = true

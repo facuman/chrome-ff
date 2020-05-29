@@ -1,0 +1,77 @@
+#+TITLE:     chrome-ff.el README
+#+SUBTITLE:  Firefox remote control extension for chrome.el
+#+AUTHOR:    Facundo de Guzman
+#+EMAIL:     (concat "facundo" at-sign "gmail.com")
+#+DESCRIPTION: R
+#+KEYWORDS:  emacs, remote, firefox, chrome
+#+LANGUAGE:  en
+
+* chrome-ff.el
+
+Chrome is an extension that is intended to allow the usage of *chrome.el* (https://github.com/anticomputer/chrome.el) with Firefox. *chrome.el* is itself a fork of *osa-chrome.el* (https://github.com/atomontage/osa-chrome).
+
+Please refer to https://github.com/anticomputer/chrome.el/blob/master/README.org for more information about *chrome.el*.
+
+** Installation
+   
+- With *straight.el* and *use-package.el*
+   
+ #+begin_src elisp
+(straight-use-package
+ '(chrome :type git
+           :host github
+           :repo "anticomputer/chrome.el"))
+           
+(straight-use-package
+ '(chrome-ff :type git
+           :host github
+           :repo "facuman/chrome-ff"))
+           
+(use-package chrome :straight t)
+(use-package chrome-ff :after (chrome) :straight t)
+
+#+end_src
+
+- Normal
+
+Download both *chrome.el* and *chrome-ff.el* to the directory of your choice and:
+
+#+begin_src elisp
+(require 'chrome)
+(require 'chrome-ff)
+#+end_src
+
+** Usage
+
+- Set the following values in firefox's configuration tab (browse to *about:config*)
+#+begin_src
+devtools.debugger.remote-enabled = true
+devtools.chrome.enabled = true
+devtools.debugger.prompt-connection = false
+#+end_src
+  
+*NOTE:* Without the 'prompt-connection' setting firefox will ask the user to verify every connection received. As the module opens connections constantly we need to disable it (i may use a persistent connection in the future).
+
+- Start firefox with the debug parameter:
+
+#+begin_src
+firefox --start-debugger-server
+#+end_src
+
+- Open the *chrome.el* buffer with *'M-x chrome'* and add the connection with *'M-x chrome-connect'*
+
+** Additional recommendations and gotchas
+
+It goes without saying that communication with firefox happens on a clear channel and, in principle, anyone with access to the port will be able to control the firefox instance. While firefox can be controlled remotely, it would be best to forward the port through an encrypted channel like ssh.
+
+The module uses a mix of javascript evaluations and the low level debug protocol interface, both were needed to get the whole range of functionality. The following proyects were a great help:
+
+https://github.com/saucelabs/foxdriver
+https://github.com/ruediger/emacs-firefox-remote
+
+For documentation you can refer to:
+
+https://developer.mozilla.org/en-US/docs/Tools/about:debugging
+https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Debugging_Firefox_Desktop
+https://docs.firefox-dev.tools/backend/protocol.html
+
