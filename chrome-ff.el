@@ -285,3 +285,5 @@ https://github.com/ruediger/emacs-firefox-remote/blob/master/firefox-remote.el"
   (chrome-ff--view-source (chrome-ff--connect (chrome-tab-port tab)
                                               (chrome-tab-host tab))
                           (format "view-source:%s" (chrome-tab-url tab))))
+
+(provide 'chrome-ff)
